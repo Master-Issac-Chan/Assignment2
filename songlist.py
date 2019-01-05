@@ -1,4 +1,5 @@
 # create your SongList class in this file
+from song import Song
 import csv
 
 class SongList:
@@ -38,6 +39,22 @@ class SongList:
             self.songs.sort(key=lambda song: song.year)
 
     def song_add(self, new_song):
+
+
+    def song_learned_count(self, learn_count = 0):
+    #songs learn count
+        for song in self.songs:
+            if song[3] == "True":
+                learn_count += 1
+        print("{} songs learned".format(learn_count))
+
+    def song_not_learned_count(self, not_learned_count):
+    #count for songs yet to learn
+        for song in self.songs:
+            if song[3] == "False":
+                not_learned_count += 1
+        print("{} songs yet to learn.".format(not_learned_count))
+
 
 
     pass
