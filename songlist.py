@@ -5,7 +5,7 @@ import csv
 class SongList:
     songs = []
     #songlist variables
-    def __init__(self, title, artist, year, is_required, song_list=[]):
+    def __init__(self):
         pass
 
     # def __str__(self):
@@ -18,17 +18,20 @@ class SongList:
     #     else:
     #         return str("Empty")
 
-    def load_songs(self, song_file=''):
+    def load_songs(self):
     #opens songs file
         temporary_list = []
-        song_file1 = open("songs.csv", "r")
-        for element in song_file1:
+        songRead = open("songs.csv", "r")
+        for element in songRead:
             temporary_list.append(element.split(','))
+        tmp_file2 = []
         for i in temporary_list:
             i[3] = i[3].strip('\n')
-            self.songs.append(i)
+            tmp_file2.append(i)
         # print(self.songs)
-        song_file1.close()
+        songRead.close()
+        self.songs = tmp_file2
+        return tmp_file2
 
     def song_add(self, new_song):
     #adds new songs and stores them
@@ -65,6 +68,18 @@ class SongList:
         format_line = title+","+artist+","+year+","+is_required+"\n"
         song_edit.write(format_line)
         song_edit.close()
+
+    def song_marked_learned(self,index_song):
+    #marks songs as learned
+        list_song = self.load_songs()
+        new_song = list_song[index_song]
+        new_song[3] = 'y'
+        list_song[index_song]= new_song
+        songWrite = open("songs.csv", "w+")
+        songWrite.truncate()
+        for e in list_song:
+            format_string = str(e[0] + ',' + e[1] + ',' + e[2] + ',' + e[3]+ '\n')
+            songWrite.writelines(format_string)
 
 
 
