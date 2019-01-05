@@ -1,6 +1,4 @@
 # create your Song class in this file
-
-
 class Song:
     #song.py properties
     def __init__(self, song_Title = '', song_Artist = '', song_Year = 0000, song_Required = True):
