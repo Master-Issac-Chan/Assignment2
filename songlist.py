@@ -31,6 +31,7 @@ class SongList:
         song_file.close()
 
     def song_sort(self, sort_by=''):
+    #sorts the songs by title, artist or year
         if sort_by = 'title':
             self.songs.sort(key=lambda song: song.title)
         elif sort_by = 'artist':
@@ -39,7 +40,10 @@ class SongList:
             self.songs.sort(key=lambda song: song.year)
 
     def song_add(self, new_song):
-
+    #adds new songs and stores them
+        new_song = new_song + '\n'
+        append_file = open('songs.csv','a')
+        new_song.write(append_file)
 
     def song_learned_count(self, learn_count = 0):
     #songs learn count
@@ -55,6 +59,8 @@ class SongList:
                 not_learned_count += 1
         print("{} songs yet to learn.".format(not_learned_count))
 
+    def song_saver(self, song_file=''):
+    #saves the songs when entered
 
 
     pass
