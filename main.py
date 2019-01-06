@@ -22,21 +22,36 @@ class SongsToLearnApp(App):
         self.root = Builder.load_file('app.kv')
         self.sort_by = "Title"
         self.create_kv_buttons()
+
+        #self.root.ids.bottom_text.text = 'bottom kek m8'
         # Above builds the general GUI and starting sort by method.
         return self.root
 
-    def create_kv_buttons(self):
-        self.root.ids.kv_buttons.clear_widgets()
 
+    def create_kv_buttons(self, tr_lst=[]):
+        self.root.ids.kv_buttons.clear_widgets()
+        lst=[]
+        lst = self.display_list()
+        if tr_lst != []:
+            print(tr_lst)
+            lst = tr_lst
         uButton = Button
-        for song in self.display_list():
+        learned = 0
+        not_learned = 0
+        for song in lst:
             if song[3] == 'n':
+                not_learned += 1
                 uButton = Button(text='"{}" by {} ({})'.format(song[0], song[1], song[2]))
                 uButton.bind(on_release=self.learned)
             if song[3] == 'y':
+                learned += 1
                 uButton = Button(text='"{}" by {} ({}) (learned)'.format(song[0], song[1], song[2]))
                 uButton.state = 'down'
                 uButton.bind(on_release=self.learned)
+
+            self.root.ids.top_text.text = 'Songs Learned: {0}, Not Learned: {1}'.format(learned,not_learned)
+
+
             # builds button for each song based on if song is learned.
             self.root.ids.kv_buttons.add_widget(uButton)
             # add the button to the "kv_buttons" using add_widget()
@@ -76,12 +91,22 @@ class SongsToLearnApp(App):
     def sort_by(self):
         pass
 
+    def change_sorting(self, on_change_atr):
+        obj = SongList()
+        var1 = obj.on_change(on_change_atr)
+        self.create_kv_buttons(var1)
+
     def learned(self, test_arg):
         #marks songs as learnt
         test_arg.state = 'down'
         song_list = SongList().load_songs()
         index = 0
         loop_counter = 0
+        if '(learned)' in test_arg.text:
+            self.root.ids.bottom_text.text = 'song already learned'
+        else:
+            self.root.ids.bottom_text.text = 'song learned'
+
         #searches through list for songs
         for song in song_list:
             format_string = str('"'+song[0]+'" by '+song[1]+' ('+song[2]+')')
