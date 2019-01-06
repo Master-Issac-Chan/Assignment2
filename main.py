@@ -5,30 +5,26 @@ Brief Project Description: CP1404 Assignment 2
 GitHub URL: https://github.com/Master-Issac-Chan/Assignment2
 """
 
+#import assets
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.button import Button
-from kivy.properties import StringProperty
-from kivy.properties import ListProperty
-# Create your main program in this file, using the SongsToLearnApp class
 
 from songlist import SongList
+
 
 class SongsToLearnApp(App):
 
     def build(self):
-        #GUI creation
+        #GUI creation, builds the general GUI and starting sort by method
         self.title = "Songs To Learn version 1"
         self.root = Builder.load_file('app.kv')
         self.sort_by = "Title"
         self.create_kv_buttons()
-
-        #self.root.ids.bottom_text.text = 'bottom kek m8'
-        # Above builds the general GUI and starting sort by method.
         return self.root
 
-
     def create_kv_buttons(self, tr_lst=[]):
+        #creates kivy buttons
         self.root.ids.kv_buttons.clear_widgets()
         lst=[]
         lst = self.display_list()
@@ -40,26 +36,25 @@ class SongsToLearnApp(App):
         not_learned = 0
         for song in lst:
             if song[3] == 'n':
+                #registers song as not learned, when clicked marks song as learned
                 not_learned += 1
                 uButton = Button(text='"{}" by {} ({})'.format(song[0], song[1], song[2]))
                 uButton.bind(on_release=self.learned)
             if song[3] == 'y':
+                #registers song as learned, when clicked indicates song as already learned
                 learned += 1
                 uButton = Button(text='"{}" by {} ({}) (learned)'.format(song[0], song[1], song[2]))
                 uButton.state = 'down'
                 uButton.bind(on_release=self.learned)
-
+            #text to indicate song learned count
             self.root.ids.top_text.text = 'Songs Learned: {0}, Not Learned: {1}'.format(learned,not_learned)
 
-
-            # builds button for each song based on if song is learned.
+            #builds button for each song based on if song is learned or not, then adds on to the "kv_buttons" using add_widget()
             self.root.ids.kv_buttons.add_widget(uButton)
-            # add the button to the "kv_buttons" using add_widget()
 
     def add_new_song(self, title, artist, year, is_required):
         #song adding
         songlist = SongList()
-        # new_song = title+","+artist+","+year+","+is_required
         songlist.song_saver(title, artist, year, is_required)
         print(title+","+artist+","+year+","+is_required)
         self.create_kv_buttons()
@@ -71,17 +66,11 @@ class SongsToLearnApp(App):
         year = self.root.ids.kv_song_year.text
         self.add_new_song(title,artist,year,is_required='n')
 
-        #error check
-
-
     def clear_input(self):
         #clear input function
         self.root.ids.kv_song_title.text = ''
         self.root.ids.kv_song_artist.text = ''
         self.root.ids.kv_song_year.text = ''
-        # title = ''
-        # artist = ''
-        # year = ''
 
     def display_list(self):
         #displays current song list
@@ -92,6 +81,7 @@ class SongsToLearnApp(App):
         pass
 
     def change_sorting(self, on_change_atr):
+        #changes song sorting
         obj = SongList()
         var1 = obj.on_change(on_change_atr)
         self.create_kv_buttons(var1)
@@ -106,7 +96,6 @@ class SongsToLearnApp(App):
             self.root.ids.bottom_text.text = 'song already learned'
         else:
             self.root.ids.bottom_text.text = 'song learned'
-
         #searches through list for songs
         for song in song_list:
             format_string = str('"'+song[0]+'" by '+song[1]+' ('+song[2]+')')
