@@ -2,15 +2,18 @@
 BoxLayout:
     orientation: 'horizontal'
     BoxLayout:
+        #left sidebar
         orientation: 'vertical'
         size_hint_x: 0.3
+        #songlist sorter
         Label:
             text: 'Sort by: '
         Spinner:
             id: kv_sort_by
             text: 'Select sorting...'
-            values: ['title', 'artist', 'year']
+            values: ['Title', 'Artist', 'Year']
             on_text: app.change_sorting(self.text)
+        #new song adder, fields song title, artist and year
         Label:
             text: 'Add New Song...'
         Label:
@@ -20,7 +23,7 @@ BoxLayout:
             value: ''
             size_hint_y: None
             height: '48dp'
-            # pressing 'Tab' moves to next field
+            #pressing 'Tab' moves to next field
             multiline: False
             write_tab: False
         Label:
@@ -41,18 +44,21 @@ BoxLayout:
             height: '48dp'
             multiline: False
             write_tab: False
+        #adds song
         Button:
             text: 'Add Song'
             on_release: app.input_song()
+        #clears input
         Button:
             text: 'Clear'
             on_release: app.clear_input()
     BoxLayout:
+        #right side
         orientation: 'vertical'
         Label:
             size_hint_y: 0.1
             id: top_text
-            text: 'test2'
+            text: 'test_text'
         GridLayout:
             # This area will contain the song list
             id: kv_buttons
