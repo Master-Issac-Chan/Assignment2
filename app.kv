@@ -8,8 +8,8 @@ BoxLayout:
             text: 'Sort by: '
         Spinner:
             id: kv_sort_by
-            text: 'spinner demo'
-            values: ['placeholder1', '2', '3']
+            text: 'Select sorting...'
+            values: ['title', 'artist', 'year']
             on_text: app.change_sorting(self.text)
         Label:
             text: 'Add New Song...'
@@ -51,6 +51,7 @@ BoxLayout:
         orientation: 'vertical'
         Label:
             size_hint_y: 0.1
+            id: top_text
             text: 'test2'
         GridLayout:
             # This area will contain the song list
@@ -59,4 +60,5 @@ BoxLayout:
             orientation: 'vertical'
         Label:
             size_hint_y: 0.1
-            text: 'test'
+            id: bottom_text
+            text: ''
