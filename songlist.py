@@ -1,6 +1,7 @@
 # create your SongList class in this file
 from song import Song
 import csv
+from operator import itemgetter
 
 class SongList:
     songs = []
@@ -19,19 +20,20 @@ class SongList:
     #         return str("Empty")
 
     def load_songs(self):
-    #opens songs file
+    #opens songs file in read mode and stores them into a temporary list
         temporary_list = []
         songRead = open("songs.csv", "r")
         for element in songRead:
             temporary_list.append(element.split(','))
-        tmp_file2 = []
+        song_listing = []
+        #puts contents from temporary list into another list
         for i in temporary_list:
             i[3] = i[3].strip('\n')
-            tmp_file2.append(i)
+            song_listing.append(i)
         # print(self.songs)
         songRead.close()
-        self.songs = tmp_file2
-        return tmp_file2
+        self.songs = song_listing
+        return song_listing
 
     def song_add(self, new_song):
     #adds new songs and stores them
@@ -39,31 +41,35 @@ class SongList:
         append_file = open('songs.csv','a')
         new_song.write(append_file)
 
-    def song_sort(self, sort_by=''):
-    #sorts the songs by title, artist or year
-        if sort_by == 'Title':
-            self.songs.sort(key=lambda song: song.title)
-        elif sort_by == 'Artist':
-            self.songs.sort(key=lambda song: song.artist)
-        elif sort_by == "Year":
-            self.songs.sort(key=lambda song: song.year)
+    def on_change(self, sort_by=''):
+    #sorts the songs by title, artist or year using itemgetter function
+        self.load_songs()
+        if sort_by == 'title':
+            key = 0
+        elif sort_by == 'artist':
+            key = 1
+        else:
+            key = 2
+        print(str(key))
+        test = sorted(self.songs, key = itemgetter(key))
+        return test
 
     def song_learned_count(self, learn_count = 0):
-    #songs learn count
+    #songs learn counter
         for song in self.songs:
             if song[3] == "y":
                 learn_count += 1
         print("{} songs learned".format(learn_count))
 
     def song_not_learned_count(self, not_learned_count):
-    #count for songs yet to learn
+    #songs not learned counter
         for song in self.songs:
             if song[3] == "n":
                 not_learned_count += 1
         print("{} songs yet to learn.".format(not_learned_count))
 
     def song_saver(self, title, artist, year, is_required):
-    #saves the songs when entered
+    #saves the songs when entered (input)
         song_edit = open("songs.csv", "a")
         format_line = title+","+artist+","+year+","+is_required+"\n"
         song_edit.write(format_line)
